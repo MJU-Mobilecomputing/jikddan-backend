@@ -4,6 +4,7 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/MJU-Mobilecomputing/jjikdan-backend/internal/customerror"
 	"github.com/MJU-Mobilecomputing/jjikdan-backend/internal/repository"
 	"github.com/MJU-Mobilecomputing/jjikdan-backend/pkg/interfaces"
 	"github.com/labstack/echo/v4"
@@ -25,7 +26,7 @@ func (u *UserController) SignupUserController(ctx echo.Context) error {
 		}
 		return ctx.JSON(http.StatusOK, user)
 	} else {
-		return ctx.JSON(http.StatusInternalServerError, errors.New("param not provided"))
+		return customerror.InternalServerError(errors.New("body does not provide or validate"))
 	}
 }
 
