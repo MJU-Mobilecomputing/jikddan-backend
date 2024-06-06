@@ -22,3 +22,8 @@ sql:
             go_struct_tag: validate:"required"
           - column: user.weight
             go_struct_tag: validate:"required"
+          - column: "diary_day_view.diary_menus"
+            nullable: true
+            go_type:
+              type: "DiaryMenu"
+              slice: true

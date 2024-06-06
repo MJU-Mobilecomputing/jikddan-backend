@@ -7,6 +7,7 @@ import (
 )
 
 type IRepository interface {
-	CreateUser(ctx context.Context, arg repository.CreateUserParams) (repository.CreateUserRow, error)
+	CreateUser(context.Context, repository.CreateUserParams) (repository.CreateUserRow, error)
 	FindUserById(context.Context, int64) (repository.FindUserByIdRow, error)
+	CreateDiaryDay(context.Context, int64) (repository.DiaryDay, error)
 }
