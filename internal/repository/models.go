@@ -13,6 +13,8 @@ type User struct {
 	Email     string             `db:"email" json:"email" validate:"required,email"`
 	Username  string             `db:"username" json:"username" validate:"required"`
 	Password  string             `db:"password" json:"password" validate:"required"`
+	Tall      int32              `db:"tall" json:"tall" validate:"required"`
+	Weight    int32              `db:"weight" json:"weight" validate:"required"`
 	CreatedAt pgtype.Timestamptz `db:"created_at" json:"created_at"`
 	UpdatedAt pgtype.Timestamptz `db:"updated_at" json:"updated_at"`
 }
