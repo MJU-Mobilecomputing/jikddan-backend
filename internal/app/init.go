@@ -54,5 +54,6 @@ func setApplication() error {
 		Handler: handler,
 		Config:  *appConfig,
 	}
+	app.InitRoutes()
 	return nil
 }
