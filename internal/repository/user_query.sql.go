@@ -7,19 +7,62 @@ package repository
 
 import (
 	"context"
+
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
-const testQuery = `-- name: TestQuery :one
-SELECT id, username, password, created_at, updated_at FROM "user"
+const createUser = `-- name: CreateUser :one
+INSERT INTO "user" (email, username, password)
+VALUES ($1, $2, $3)
+RETURNING id, email, username, created_at, updated_at
 `
 
-func (q *Queries) TestQuery(ctx context.Context) (User, error) {
-	row := q.db.QueryRow(ctx, testQuery)
-	var i User
+type CreateUserParams struct {
+	Email    string `db:"email" json:"email" validate:"required,email"`
+	Username string `db:"username" json:"username" validate:"required"`
+	Password string `db:"password" json:"password" validate:"required"`
+}
+
+type CreateUserRow struct {
+	ID        int64              `db:"id" json:"id"`
+	Email     string             `db:"email" json:"email" validate:"required,email"`
+	Username  string             `db:"username" json:"username" validate:"required"`
+	CreatedAt pgtype.Timestamptz `db:"created_at" json:"created_at"`
+	UpdatedAt pgtype.Timestamptz `db:"updated_at" json:"updated_at"`
+}
+
+func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (CreateUserRow, error) {
+	row := q.db.QueryRow(ctx, createUser, arg.Email, arg.Username, arg.Password)
+	var i CreateUserRow
 	err := row.Scan(
 		&i.ID,
+		&i.Email,
 		&i.Username,
-		&i.Password,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
+}
+
+const findUserById = `-- name: FindUserById :one
+SELECT id, email, username, created_at, updated_at FROM "user" WHERE id = $1
+`
+
+type FindUserByIdRow struct {
+	ID        int64              `db:"id" json:"id"`
+	Email     string             `db:"email" json:"email" validate:"required,email"`
+	Username  string             `db:"username" json:"username" validate:"required"`
+	CreatedAt pgtype.Timestamptz `db:"created_at" json:"created_at"`
+	UpdatedAt pgtype.Timestamptz `db:"updated_at" json:"updated_at"`
+}
+
+func (q *Queries) FindUserById(ctx context.Context, id int64) (FindUserByIdRow, error) {
+	row := q.db.QueryRow(ctx, findUserById, id)
+	var i FindUserByIdRow
+	err := row.Scan(
+		&i.ID,
+		&i.Email,
+		&i.Username,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 	)

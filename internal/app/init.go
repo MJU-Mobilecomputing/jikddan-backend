@@ -9,6 +9,8 @@ import (
 
 	"github.com/MJU-Mobilecomputing/jjikdan-backend/internal/config"
 	"github.com/MJU-Mobilecomputing/jjikdan-backend/internal/db"
+	"github.com/MJU-Mobilecomputing/jjikdan-backend/internal/repository"
+	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 )
 
@@ -49,10 +51,12 @@ func setApplication() error {
 	}
 	handler := echo.New()
 	app = &Application{
-		Port:    appConfig.App.Port,
-		DB:      conn,
-		Handler: handler,
-		Config:  *appConfig,
+		Port:       appConfig.App.Port,
+		DB:         conn,
+		Repository: *repository.New(conn),
+		Handler:    handler,
+		Config:     *appConfig,
+		Validator:  validator.New(),
 	}
 	app.InitRoutes()
 	return nil

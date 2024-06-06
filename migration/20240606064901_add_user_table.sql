@@ -1,7 +1,8 @@
 -- +goose Up
 CREATE TABLE "user" (
-  "id" bigint PRIMARY KEY NOT NULL,
-  "username" varchar NOT NULL,
+  "id" bigserial PRIMARY KEY,
+  "email" varchar NOT NULL UNIQUE,
+  "username" varchar NOT NULL UNIQUE,
   "password" varchar NOT NULL,
   "created_at" timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
   "updated_at" timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL

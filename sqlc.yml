@@ -12,3 +12,9 @@ sql:
         emit_pointers_for_null_types: true
         sql_package: "pgx/v5"
         overrides:
+          - column: user.email
+            go_struct_tag: validate:"required,email"
+          - column: user.username
+            go_struct_tag: validate:"required"
+          - column: user.password
+            go_struct_tag: validate:"required"
