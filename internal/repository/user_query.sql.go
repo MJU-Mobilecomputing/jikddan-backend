@@ -9,15 +9,42 @@ import (
 	"context"
 )
 
-const testQuery = `-- name: TestQuery :one
-SELECT id, username, password, created_at, updated_at FROM "user"
+const createUser = `-- name: CreateUser :one
+INSERT INTO "user" (email, username, password)
+VALUES ($1, $2, $3)
+RETURNING id, email, username, password, created_at, updated_at
 `
 
-func (q *Queries) TestQuery(ctx context.Context) (User, error) {
-	row := q.db.QueryRow(ctx, testQuery)
+type CreateUserParams struct {
+	Email    string `db:"email" json:"email" validate:"required,email"`
+	Username string `db:"username" json:"username" validate:"required"`
+	Password string `db:"password" json:"password" validate:"required"`
+}
+
+func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, error) {
+	row := q.db.QueryRow(ctx, createUser, arg.Email, arg.Username, arg.Password)
 	var i User
 	err := row.Scan(
 		&i.ID,
+		&i.Email,
+		&i.Username,
+		&i.Password,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
+}
+
+const findUserById = `-- name: FindUserById :one
+SELECT id, email, username, password, created_at, updated_at FROM "user" WHERE id = $1
+`
+
+func (q *Queries) FindUserById(ctx context.Context, id int64) (User, error) {
+	row := q.db.QueryRow(ctx, findUserById, id)
+	var i User
+	err := row.Scan(
+		&i.ID,
+		&i.Email,
 		&i.Username,
 		&i.Password,
 		&i.CreatedAt,
