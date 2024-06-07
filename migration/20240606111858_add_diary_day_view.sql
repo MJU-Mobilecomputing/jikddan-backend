@@ -1,9 +1,12 @@
 -- +goose Up
+ALTER TABLE diary_day
+ADD COLUMN "date" date NOT NULL;
+
 CREATE VIEW diary_day_view AS
 SELECT
     d.id AS diary_day_id,
     d.user_id,
-    d.created_at::DATE AS diary_date,
+    d.date AS diary_date,
     JSON_AGG(DISTINCT m.*) AS diary_menus
 FROM
     diary_day d

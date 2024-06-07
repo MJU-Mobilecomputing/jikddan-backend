@@ -4,6 +4,7 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/MJU-Mobilecomputing/jjikdan-backend/internal/constants"
 	"github.com/MJU-Mobilecomputing/jjikdan-backend/internal/customerror"
 	"github.com/MJU-Mobilecomputing/jjikdan-backend/internal/repository"
 	"github.com/MJU-Mobilecomputing/jjikdan-backend/pkg/interfaces"
@@ -19,7 +20,7 @@ func InitUserController() *UserController {
 }
 
 func (u *UserController) SignupUserController(ctx echo.Context) error {
-	if param, ok := ctx.Get("userParam").(repository.CreateUserParams); ok {
+	if param, ok := ctx.Get(constants.PARAM_KEY).(repository.CreateUserParams); ok {
 		user, err := u.UserService.Create(param)
 		if err != nil {
 			return err

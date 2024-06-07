@@ -10,17 +10,18 @@ import (
 )
 
 const createDiaryMenu = `-- name: CreateDiaryMenu :one
-INSERT INTO diary_menu (img, summary, total_cal, status, menu_time)
-VALUES ($1, $2, $3, $4, $5)
+INSERT INTO diary_menu (img, summary, total_cal, status, menu_time, diary_day_id)
+VALUES ($1, $2, $3, $4, $5, $6)
 RETURNING id, diary_day_id, img, summary, total_cal, status, menu_time, created_at, updated_at
 `
 
 type CreateDiaryMenuParams struct {
-	Img      string       `db:"img" json:"img"`
-	Summary  string       `db:"summary" json:"summary"`
-	TotalCal int32        `db:"total_cal" json:"total_cal"`
-	Status   NullStatus   `db:"status" json:"status"`
-	MenuTime NullMenuTime `db:"menu_time" json:"menu_time"`
+	Img        string       `db:"img" json:"img" validate:"required"`
+	Summary    string       `db:"summary" json:"summary" validate:"required"`
+	TotalCal   int32        `db:"total_cal" json:"total_cal" validate:"required"`
+	Status     NullStatus   `db:"status" json:"status" validate:"required,status"`
+	MenuTime   NullMenuTime `db:"menu_time" json:"menu_time" validate:"required,menutime"`
+	DiaryDayID int64        `db:"diary_day_id" json:"diary_day_id"`
 }
 
 func (q *Queries) CreateDiaryMenu(ctx context.Context, arg CreateDiaryMenuParams) (DiaryMenu, error) {
@@ -30,6 +31,7 @@ func (q *Queries) CreateDiaryMenu(ctx context.Context, arg CreateDiaryMenuParams
 		arg.TotalCal,
 		arg.Status,
 		arg.MenuTime,
+		arg.DiaryDayID,
 	)
 	var i DiaryMenu
 	err := row.Scan(

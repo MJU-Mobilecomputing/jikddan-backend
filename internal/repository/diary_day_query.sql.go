@@ -7,37 +7,46 @@ package repository
 
 import (
 	"context"
+
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 const createDiaryDay = `-- name: CreateDiaryDay :one
-INSERT INTO "diary_day" (user_id)
-VALUES ($1)
-RETURNING id, user_id, created_at, updated_at
+INSERT INTO "diary_day" (user_id, "date")
+VALUES ($1, $2)
+RETURNING id, user_id, created_at, updated_at, date
 `
 
-func (q *Queries) CreateDiaryDay(ctx context.Context, userID int64) (DiaryDay, error) {
-	row := q.db.QueryRow(ctx, createDiaryDay, userID)
+type CreateDiaryDayParams struct {
+	UserID int64       `db:"user_id" json:"user_id" validate:"required"`
+	Date   pgtype.Date `db:"date" json:"date" validate:"required"`
+}
+
+func (q *Queries) CreateDiaryDay(ctx context.Context, arg CreateDiaryDayParams) (DiaryDay, error) {
+	row := q.db.QueryRow(ctx, createDiaryDay, arg.UserID, arg.Date)
 	var i DiaryDay
 	err := row.Scan(
 		&i.ID,
 		&i.UserID,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.Date,
 	)
 	return i, err
 }
 
 const findOneDiaryWithMenu = `-- name: FindOneDiaryWithMenu :one
-SELECT diary_day_id, user_id, diary_date, diary_menus FROM diary_day_view WHERE diary_day_id = $1 AND EXTRACT(MONTH FROM diary_data) = $2::int
+SELECT diary_day_id, user_id, diary_date, diary_menus FROM diary_day_view WHERE diary_day_id = $1 AND EXTRACT(MONTH FROM diary_date) = $2::int AND EXTRACT(DAY FROM diary_date) = $3::int
 `
 
 type FindOneDiaryWithMenuParams struct {
 	DiaryDayID int64 `db:"diary_day_id" json:"diary_day_id"`
 	Month      int32 `db:"month" json:"month"`
+	Day        int32 `db:"day" json:"day"`
 }
 
 func (q *Queries) FindOneDiaryWithMenu(ctx context.Context, arg FindOneDiaryWithMenuParams) (DiaryDayView, error) {
-	row := q.db.QueryRow(ctx, findOneDiaryWithMenu, arg.DiaryDayID, arg.Month)
+	row := q.db.QueryRow(ctx, findOneDiaryWithMenu, arg.DiaryDayID, arg.Month, arg.Day)
 	var i DiaryDayView
 	err := row.Scan(
 		&i.DiaryDayID,

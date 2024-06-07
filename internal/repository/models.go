@@ -99,9 +99,10 @@ func (ns NullStatus) Value() (driver.Value, error) {
 
 type DiaryDay struct {
 	ID        int64              `db:"id" json:"id"`
-	UserID    int64              `db:"user_id" json:"user_id"`
+	UserID    int64              `db:"user_id" json:"user_id" validate:"required"`
 	CreatedAt pgtype.Timestamptz `db:"created_at" json:"created_at"`
 	UpdatedAt pgtype.Timestamptz `db:"updated_at" json:"updated_at"`
+	Date      pgtype.Date        `db:"date" json:"date" validate:"required"`
 }
 
 type DiaryDayView struct {
@@ -114,11 +115,11 @@ type DiaryDayView struct {
 type DiaryMenu struct {
 	ID         int64              `db:"id" json:"id"`
 	DiaryDayID int64              `db:"diary_day_id" json:"diary_day_id"`
-	Img        string             `db:"img" json:"img"`
-	Summary    string             `db:"summary" json:"summary"`
-	TotalCal   int32              `db:"total_cal" json:"total_cal"`
-	Status     NullStatus         `db:"status" json:"status"`
-	MenuTime   NullMenuTime       `db:"menu_time" json:"menu_time"`
+	Img        string             `db:"img" json:"img" validate:"required"`
+	Summary    string             `db:"summary" json:"summary" validate:"required"`
+	TotalCal   int32              `db:"total_cal" json:"total_cal" validate:"required"`
+	Status     NullStatus         `db:"status" json:"status" validate:"required,status"`
+	MenuTime   NullMenuTime       `db:"menu_time" json:"menu_time" validate:"required,menutime"`
 	CreatedAt  pgtype.Timestamptz `db:"created_at" json:"created_at"`
 	UpdatedAt  pgtype.Timestamptz `db:"updated_at" json:"updated_at"`
 }

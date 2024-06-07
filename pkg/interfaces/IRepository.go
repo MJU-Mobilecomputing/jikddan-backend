@@ -9,5 +9,7 @@ import (
 type IRepository interface {
 	CreateUser(context.Context, repository.CreateUserParams) (repository.CreateUserRow, error)
 	FindUserById(context.Context, int64) (repository.FindUserByIdRow, error)
-	CreateDiaryDay(context.Context, int64) (repository.DiaryDay, error)
+	CreateDiaryDay(context.Context, repository.CreateDiaryDayParams) (repository.DiaryDay, error)
+	CreateDiaryMenu(context.Context, repository.CreateDiaryMenuParams) (repository.DiaryMenu, error)
+	FindOneDiaryWithMenu(context.Context, repository.FindOneDiaryWithMenuParams) (repository.DiaryDayView, error)
 }

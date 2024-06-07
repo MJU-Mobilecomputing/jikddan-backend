@@ -58,6 +58,9 @@ func setApplication() error {
 		Config:     *appConfig,
 		Validator:  validator.New(),
 	}
+
+	app.Validator.RegisterValidation("status", isValidStatus)
+	app.Validator.RegisterValidation("menutime", isMenuTime)
 	app.InitRoutes()
 	return nil
 }
