@@ -19,10 +19,17 @@ func (app *Application) InitRoutes() {
 		Format: "method=${method}, uri=${uri}, status=${status}\n",
 	}))
 	app.InitDiaryMenuRoutes(&diaryMenuService)
+	app.InitDiaryDayRoutes(&diaryDayService)
 }
 
 func (app *Application) InitDiaryMenuRoutes(service interfaces.IDiaryMenuService) {
 	e := app.Handler.Group(fmt.Sprintf(API_VER, "/menu"))
 	diaryMenuController := diarymenu.InitDiaryMenuController().WithDiaryMenuService(service)
 	e.POST("", diaryMenuController.CreateDiaryMenuController)
+}
+
+func (app *Application) InitDiaryDayRoutes(service interfaces.IDiaryDayService) {
+	e := app.Handler.Group(fmt.Sprintf(API_VER, "/day"))
+	diaryDayController := diaryday.InitDiaryDayController().WithDiaryDayService(service)
+	e.GET("/:date", diaryDayController.FindDiaryDayWithMenu)
 }

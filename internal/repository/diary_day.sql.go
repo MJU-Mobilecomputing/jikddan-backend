@@ -44,3 +44,14 @@ func (q *Queries) FindDiaryDayWithDate(ctx context.Context, date pgtype.Date) (D
 	)
 	return i, err
 }
+
+const findDiaryDayWithMenus = `-- name: FindDiaryDayWithMenus :one
+SELECT diary_day_id, diary_date, diary_menus FROM diary_day_view WHERE diary_date = $1
+`
+
+func (q *Queries) FindDiaryDayWithMenus(ctx context.Context, diaryDate pgtype.Date) (DiaryDayView, error) {
+	row := q.db.QueryRow(ctx, findDiaryDayWithMenus, diaryDate)
+	var i DiaryDayView
+	err := row.Scan(&i.DiaryDayID, &i.DiaryDate, &i.DiaryMenus)
+	return i, err
+}
