@@ -12,35 +12,3 @@ sql:
         emit_pointers_for_null_types: true
         sql_package: "pgx/v5"
         overrides:
-          - column: user.email
-            go_struct_tag: validate:"required,email"
-          - column: user.username
-            go_struct_tag: validate:"required"
-          - column: user.password
-            go_struct_tag: validate:"required"
-          - column: user.tall
-            go_struct_tag: validate:"required"
-          - column: user.weight
-            go_struct_tag: validate:"required"
-
-          - column: diary_menu.img
-            go_struct_tag: validate:"required"
-          - column: diary_menu.summary
-            go_struct_tag: validate:"required"
-          - column: diary_menu.total_cal
-            go_struct_tag: validate:"required"
-          - column: diary_menu.status
-            go_struct_tag: validate:"required,status"
-          - column: diary_menu.menu_time
-            go_struct_tag: validate:"required,menutime"
-
-          - column: diary_day.user_id
-            go_struct_tag: validate:"required"
-          - column: diary_day.date
-            go_struct_tag: validate:"required"
-
-          - column: "diary_day_view.diary_menus"
-            nullable: true
-            go_type:
-              type: "DiaryMenu"
-              slice: true

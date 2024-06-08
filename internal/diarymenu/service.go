@@ -6,22 +6,24 @@ import (
 	"github.com/MJU-Mobilecomputing/jjikdan-backend/internal/customerror"
 	"github.com/MJU-Mobilecomputing/jjikdan-backend/internal/repository"
 	"github.com/MJU-Mobilecomputing/jjikdan-backend/pkg/interfaces"
-	"github.com/go-playground/validator/v10"
 )
 
 type DiaryMenuService struct {
-	Repository interfaces.IRepository
-	Validator  *validator.Validate
+	Repository      interfaces.IRepository
+	DiaryDayService interfaces.IDiaryDayService
 }
 
 func (d *DiaryMenuService) Create(param repository.CreateDiaryMenuParams) (*repository.DiaryMenu, error) {
-	err := d.Validator.Struct(param)
-	if err != nil {
-		return nil, customerror.ValidateError(err)
-	}
 	diaryMenu, err := d.Repository.CreateDiaryMenu(context.Background(), param)
 	if err != nil {
 		return nil, customerror.DiaryMenuCreationFail(err)
+	}
+	_, err = d.DiaryDayService.FindOneByDate(param.Date)
+	if err != nil {
+		_, err := d.DiaryDayService.Create(param.Date)
+		if err != nil {
+			return nil, err
+		}
 	}
 	return &diaryMenu, nil
 }
@@ -35,7 +37,7 @@ func (d DiaryMenuService) WithRepository(repo interfaces.IRepository) DiaryMenuS
 	return d
 }
 
-func (d DiaryMenuService) WithValidator(validator *validator.Validate) DiaryMenuService {
-	d.Validator = validator
+func (d DiaryMenuService) WithDiaryDayService(service interfaces.IDiaryDayService) DiaryMenuService {
+	d.DiaryDayService = service
 	return d
 }

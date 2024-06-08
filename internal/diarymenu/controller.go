@@ -3,8 +3,8 @@ package diarymenu
 import (
 	"net/http"
 
+	"github.com/MJU-Mobilecomputing/jjikdan-backend/internal/customerror"
 	"github.com/MJU-Mobilecomputing/jjikdan-backend/internal/repository"
-	"github.com/MJU-Mobilecomputing/jjikdan-backend/internal/utils"
 	"github.com/MJU-Mobilecomputing/jjikdan-backend/pkg/interfaces"
 	"github.com/labstack/echo/v4"
 )
@@ -13,19 +13,17 @@ type DiaryMenuController struct {
 	DiaryMenuService interfaces.IDiaryMenuService
 }
 
-func InitController() *DiaryMenuController {
+func InitDiaryMenuController() *DiaryMenuController {
 	return &DiaryMenuController{}
 }
 
 func (d *DiaryMenuController) CreateDiaryMenuController(ctx echo.Context) error {
-	param, err := utils.GetParam[repository.CreateDiaryMenuParams](ctx)
+	var param repository.CreateDiaryMenuParams
+	err := ctx.Bind(&param)
 	if err != nil {
-		return err
+		return customerror.InternalServerError(err)
 	}
-	if param.DiaryDayID == 0 {
-		// create diary day
-	}
-	diaryMenu, err := d.DiaryMenuService.Create(*param)
+	diaryMenu, err := d.DiaryMenuService.Create(param)
 	if err != nil {
 		return err
 	}

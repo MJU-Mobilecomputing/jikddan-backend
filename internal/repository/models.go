@@ -99,38 +99,20 @@ func (ns NullStatus) Value() (driver.Value, error) {
 
 type DiaryDay struct {
 	ID        int64              `db:"id" json:"id"`
-	UserID    int64              `db:"user_id" json:"user_id" validate:"required"`
+	Date      pgtype.Date        `db:"date" json:"date"`
 	CreatedAt pgtype.Timestamptz `db:"created_at" json:"created_at"`
 	UpdatedAt pgtype.Timestamptz `db:"updated_at" json:"updated_at"`
-	Date      pgtype.Date        `db:"date" json:"date" validate:"required"`
-}
-
-type DiaryDayView struct {
-	DiaryDayID int64       `db:"diary_day_id" json:"diary_day_id"`
-	UserID     int64       `db:"user_id" json:"user_id"`
-	DiaryDate  pgtype.Date `db:"diary_date" json:"diary_date"`
-	DiaryMenus []DiaryMenu `db:"diary_menus" json:"diary_menus"`
 }
 
 type DiaryMenu struct {
 	ID         int64              `db:"id" json:"id"`
-	DiaryDayID int64              `db:"diary_day_id" json:"diary_day_id"`
-	Img        string             `db:"img" json:"img" validate:"required"`
-	Summary    string             `db:"summary" json:"summary" validate:"required"`
-	TotalCal   int32              `db:"total_cal" json:"total_cal" validate:"required"`
-	Status     NullStatus         `db:"status" json:"status" validate:"required,status"`
-	MenuTime   NullMenuTime       `db:"menu_time" json:"menu_time" validate:"required,menutime"`
+	DiaryDayID *int64             `db:"diary_day_id" json:"diary_day_id"`
+	Date       pgtype.Date        `db:"date" json:"date"`
+	Img        *string            `db:"img" json:"img"`
+	Summary    *string            `db:"summary" json:"summary"`
+	TotalCal   *int32             `db:"total_cal" json:"total_cal"`
+	Status     NullStatus         `db:"status" json:"status"`
+	MenuTime   NullMenuTime       `db:"menu_time" json:"menu_time"`
 	CreatedAt  pgtype.Timestamptz `db:"created_at" json:"created_at"`
 	UpdatedAt  pgtype.Timestamptz `db:"updated_at" json:"updated_at"`
-}
-
-type User struct {
-	ID        int64              `db:"id" json:"id"`
-	Email     string             `db:"email" json:"email" validate:"required,email"`
-	Username  string             `db:"username" json:"username" validate:"required"`
-	Password  string             `db:"password" json:"password" validate:"required"`
-	Tall      int32              `db:"tall" json:"tall" validate:"required"`
-	Weight    int32              `db:"weight" json:"weight" validate:"required"`
-	CreatedAt pgtype.Timestamptz `db:"created_at" json:"created_at"`
-	UpdatedAt pgtype.Timestamptz `db:"updated_at" json:"updated_at"`
 }
