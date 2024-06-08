@@ -101,6 +101,10 @@ type DiaryDailySummary struct {
 	DiaryDate         pgtype.Date `db:"diary_date" json:"diary_date"`
 	TotalFoodMoisture int64       `db:"total_food_moisture" json:"total_food_moisture"`
 	TotalSalt         int64       `db:"total_salt" json:"total_salt"`
+	TotalCal          int64       `db:"total_cal" json:"total_cal"`
+	TotalCarbon       int64       `db:"total_carbon" json:"total_carbon"`
+	TotalFat          int64       `db:"total_fat" json:"total_fat"`
+	TotalProtein      int64       `db:"total_protein" json:"total_protein"`
 	AverageScore      float64     `db:"average_score" json:"average_score"`
 }
 
@@ -130,4 +134,17 @@ type DiaryMenu struct {
 	FoodMoisture *int32             `db:"food_moisture" json:"food_moisture"`
 	Salt         *int32             `db:"salt" json:"salt"`
 	Score        *int32             `db:"score" json:"score"`
+}
+
+type WeeklySummary struct {
+	StartDate          int32          `db:"start_date" json:"start_date"`
+	EndDate            int32          `db:"end_date" json:"end_date"`
+	Month              pgtype.Numeric `db:"month" json:"month"`
+	WeekOfMonth        int32          `db:"week_of_month" json:"week_of_month"`
+	WeeklyFoodMoisture int64          `db:"weekly_food_moisture" json:"weekly_food_moisture"`
+	WeeklySalt         int64          `db:"weekly_salt" json:"weekly_salt"`
+	WeeklyCarbon       int64          `db:"weekly_carbon" json:"weekly_carbon"`
+	WeeklyFat          int64          `db:"weekly_fat" json:"weekly_fat"`
+	WeeklyProtein      int64          `db:"weekly_protein" json:"weekly_protein"`
+	WeeklyAverageScore float64        `db:"weekly_average_score" json:"weekly_average_score"`
 }

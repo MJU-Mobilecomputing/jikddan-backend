@@ -39,6 +39,23 @@ func (g *GPTRepository) ChatWithImage(img string, prompt string) (*string, error
 	return &result, nil
 }
 
+func (g *GPTRepository) ChatRequest(text string) (*string, error) {
+	resp, err := g.Client.CreateChatCompletion(context.Background(), openai.ChatCompletionRequest{
+		Model: openai.GPT4o,
+		Messages: []openai.ChatCompletionMessage{
+			{
+				Role:    openai.ChatMessageRoleUser,
+				Content: text,
+			},
+		},
+	})
+	if err != nil {
+		return nil, err
+	}
+	result := resp.Choices[0].Message.Content
+	return &result, nil
+}
+
 func InitGPTRepository() *GPTRepository {
 	return &GPTRepository{}
 }

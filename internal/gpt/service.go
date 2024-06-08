@@ -2,9 +2,11 @@ package gpt
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 
 	"github.com/MJU-Mobilecomputing/jjikdan-backend/internal/customerror"
+	"github.com/MJU-Mobilecomputing/jjikdan-backend/internal/repository"
 	"github.com/MJU-Mobilecomputing/jjikdan-backend/internal/utils"
 	"github.com/MJU-Mobilecomputing/jjikdan-backend/pkg/interfaces"
 )
@@ -26,6 +28,14 @@ func (g *GPTService) GetMenuNutrient(img string) (*utils.MenuNeutrient, error) {
 	}
 	log.Println(result)
 	return &result, nil
+}
+
+func (g *GPTService) GetWeeklySolution(summary repository.FindWeeklySummaryRow) (*string, error) {
+	resp, err := g.Repository.ChatRequest(fmt.Sprintf(WEEKLY_SOLUTION, summary.WeeklyProtein, summary.WeeklyFoodMoisture, summary.WeeklySalt, summary.WeeklyCarbon, summary.WeeklyFat))
+	if err != nil {
+		return nil, customerror.InternalServerError(err)
+	}
+	return resp, nil
 }
 
 func InitGPTService() *GPTService {

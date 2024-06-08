@@ -20,3 +20,8 @@ type CreateMenuRequest struct {
 	Date     pgtype.Date             `form:"date"`
 	MenuTime repository.NullMenuTime `form:"menu_time"`
 }
+
+type WeeklySummaryResponse struct {
+	WeeklySummary repository.FindWeeklySummaryRow `json:"weekly_summary"`
+	Solution      string                          `json:"solution"`
+}
