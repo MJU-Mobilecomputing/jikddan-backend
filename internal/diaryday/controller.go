@@ -3,11 +3,9 @@ package diaryday
 import (
 	"log"
 	"net/http"
-	"time"
 
-	"github.com/MJU-Mobilecomputing/jjikdan-backend/internal/customerror"
+	"github.com/MJU-Mobilecomputing/jjikdan-backend/internal/utils"
 	"github.com/MJU-Mobilecomputing/jjikdan-backend/pkg/interfaces"
-	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/labstack/echo/v4"
 )
 
@@ -21,22 +19,29 @@ func InitDiaryDayController() *DiaryDayController {
 
 func (d *DiaryDayController) FindDiaryDayWithMenu(ctx echo.Context) error {
 	param := ctx.Param("date")
-	log.Println(param)
-	var date pgtype.Date
-	parsedTime, err := time.Parse("2006-01-02", param)
-	log.Println(parsedTime)
+	date, err := utils.ParseTime(param)
 	if err != nil {
-		return customerror.InvalidParamError(err)
+		return err
 	}
-	date.Time = parsedTime
-	date.Valid = true
-	log.Println(date)
-	view, err := d.DiaryDayService.FindOneWithMenu(date)
+	view, err := d.DiaryDayService.FindOneWithMenu(*date)
 	if err != nil {
 		log.Println(err)
 		return err
 	}
 	return ctx.JSON(http.StatusOK, view)
+}
+
+func (d *DiaryDayController) FindSummary(ctx echo.Context) error {
+	param := ctx.Param("date")
+	date, err := utils.ParseTime(param)
+	if err != nil {
+		return err
+	}
+	summary, err := d.DiaryDayService.FindSummary(*date)
+	if err != nil {
+		return err
+	}
+	return ctx.JSON(http.StatusOK, summary)
 }
 
 func (d DiaryDayController) WithDiaryDayService(service interfaces.IDiaryDayService) DiaryDayController {

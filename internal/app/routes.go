@@ -37,4 +37,5 @@ func (app *Application) InitDiaryDayRoutes(service interfaces.IDiaryDayService) 
 	e := app.Handler.Group(fmt.Sprintf(API_VER, "/diary"))
 	diaryDayController := diaryday.InitDiaryDayController().WithDiaryDayService(service)
 	e.GET("/:date", diaryDayController.FindDiaryDayWithMenu)
+	e.GET("/:date/summary", diaryDayController.FindSummary)
 }

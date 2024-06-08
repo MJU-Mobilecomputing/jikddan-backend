@@ -29,6 +29,22 @@ func (q *Queries) CreateDiaryDay(ctx context.Context, date pgtype.Date) (DiaryDa
 	return i, err
 }
 
+const findDailySummaryWithDate = `-- name: FindDailySummaryWithDate :one
+SELECT diary_date, total_food_moisture, total_salt, average_score FROM diary_daily_summary WHERE diary_date = $1
+`
+
+func (q *Queries) FindDailySummaryWithDate(ctx context.Context, diaryDate pgtype.Date) (DiaryDailySummary, error) {
+	row := q.db.QueryRow(ctx, findDailySummaryWithDate, diaryDate)
+	var i DiaryDailySummary
+	err := row.Scan(
+		&i.DiaryDate,
+		&i.TotalFoodMoisture,
+		&i.TotalSalt,
+		&i.AverageScore,
+	)
+	return i, err
+}
+
 const findDiaryDayWithDate = `-- name: FindDiaryDayWithDate :one
 SELECT id, date, created_at, updated_at FROM diary_day WHERE date = $1
 `
