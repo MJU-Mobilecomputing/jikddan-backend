@@ -12,19 +12,21 @@ import (
 )
 
 const createDiaryMenu = `-- name: CreateDiaryMenu :one
-INSERT INTO diary_menu (diary_day_id, img, summary, total_cal, status, menu_time, date)
-VALUES ($1, $2, $3, $4, $5, $6, $7)
-RETURNING id, diary_day_id, date, img, summary, total_cal, status, menu_time, created_at, updated_at
+INSERT INTO diary_menu (diary_day_id, img, summary, total_cal,  menu_time, date, food_moisture, salt, score)
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+RETURNING id, diary_day_id, date, img, summary, total_cal, menu_time, created_at, updated_at, food_moisture, salt, score
 `
 
 type CreateDiaryMenuParams struct {
-	DiaryDayID *int64       `db:"diary_day_id" json:"diary_day_id"`
-	Img        *string      `db:"img" json:"img"`
-	Summary    *string      `db:"summary" json:"summary"`
-	TotalCal   *int32       `db:"total_cal" json:"total_cal"`
-	Status     NullStatus   `db:"status" json:"status"`
-	MenuTime   NullMenuTime `db:"menu_time" json:"menu_time"`
-	Date       pgtype.Date  `db:"date" json:"date"`
+	DiaryDayID   *int64       `db:"diary_day_id" json:"diary_day_id"`
+	Img          *string      `db:"img" json:"img"`
+	Summary      *string      `db:"summary" json:"summary"`
+	TotalCal     *int32       `db:"total_cal" json:"total_cal"`
+	MenuTime     NullMenuTime `db:"menu_time" json:"menu_time"`
+	Date         pgtype.Date  `db:"date" json:"date"`
+	FoodMoisture *int32       `db:"food_moisture" json:"food_moisture"`
+	Salt         *int32       `db:"salt" json:"salt"`
+	Score        *int32       `db:"score" json:"score"`
 }
 
 func (q *Queries) CreateDiaryMenu(ctx context.Context, arg CreateDiaryMenuParams) (DiaryMenu, error) {
@@ -33,9 +35,11 @@ func (q *Queries) CreateDiaryMenu(ctx context.Context, arg CreateDiaryMenuParams
 		arg.Img,
 		arg.Summary,
 		arg.TotalCal,
-		arg.Status,
 		arg.MenuTime,
 		arg.Date,
+		arg.FoodMoisture,
+		arg.Salt,
+		arg.Score,
 	)
 	var i DiaryMenu
 	err := row.Scan(
@@ -45,10 +49,12 @@ func (q *Queries) CreateDiaryMenu(ctx context.Context, arg CreateDiaryMenuParams
 		&i.Img,
 		&i.Summary,
 		&i.TotalCal,
-		&i.Status,
 		&i.MenuTime,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.FoodMoisture,
+		&i.Salt,
+		&i.Score,
 	)
 	return i, err
 }

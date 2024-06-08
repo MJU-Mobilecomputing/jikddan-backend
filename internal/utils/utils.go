@@ -2,6 +2,7 @@ package utils
 
 import (
 	"errors"
+	"regexp"
 
 	"github.com/MJU-Mobilecomputing/jjikdan-backend/internal/constants"
 	"github.com/MJU-Mobilecomputing/jjikdan-backend/internal/customerror"
@@ -13,4 +14,10 @@ func GetParam[T any](ctx echo.Context) (*T, error) {
 		return param, nil
 	}
 	return nil, customerror.InternalServerError(errors.New("cannot retrive param"))
+}
+
+func GetJsonString(str string) string {
+	re := regexp.MustCompile(`\{[\s\S]*\}`)
+	jsonString := re.FindString(str)
+	return jsonString
 }
