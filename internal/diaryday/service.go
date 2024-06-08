@@ -3,6 +3,7 @@ package diaryday
 import (
 	"context"
 
+	"github.com/MJU-Mobilecomputing/jjikdan-backend/internal/customerror"
 	"github.com/MJU-Mobilecomputing/jjikdan-backend/internal/repository"
 	"github.com/MJU-Mobilecomputing/jjikdan-backend/pkg/interfaces"
 	"github.com/jackc/pgx/v5/pgtype"
@@ -23,7 +24,7 @@ func (d *DiaryDayService) Create(date pgtype.Date) (*repository.DiaryDay, error)
 func (d *DiaryDayService) FindOneByDate(date pgtype.Date) (*repository.DiaryDay, error) {
 	diaryDay, err := d.Repository.FindDiaryDayWithDate(context.Background(), date)
 	if err != nil {
-		return nil, err
+		return nil, customerror.DiaryDayNotFound(err)
 	}
 	return &diaryDay, nil
 }
@@ -31,9 +32,9 @@ func (d *DiaryDayService) FindOneByDate(date pgtype.Date) (*repository.DiaryDay,
 func (d *DiaryDayService) FindOneWithMenu(date pgtype.Date) (*repository.DiaryDayView, error) {
 	diaryMenus, err := d.Repository.FindDiaryDayWithMenus(context.Background(), date)
 	if err != nil {
-		return nil, err
+		return nil, customerror.DiaryDayNotFound(err)
 	}
-	return &diaryMenus, nil
+	return &diaryMenus, customerror.DiaryDayNotFound(err)
 }
 
 func (d *DiaryDayService) FindSummary(date pgtype.Date) (*repository.DiaryDailySummary, error) {
@@ -41,7 +42,7 @@ func (d *DiaryDayService) FindSummary(date pgtype.Date) (*repository.DiaryDailyS
 	if err != nil {
 		return nil, err
 	}
-	return &dailySummary, nil
+	return &dailySummary, customerror.DiaryDayNotFound(err)
 }
 
 func InitDiaryDayService() *DiaryDayService {

@@ -1,7 +1,6 @@
 package diaryday
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/MJU-Mobilecomputing/jjikdan-backend/internal/utils"
@@ -25,7 +24,6 @@ func (d *DiaryDayController) FindDiaryDayWithMenu(ctx echo.Context) error {
 	}
 	view, err := d.DiaryDayService.FindOneWithMenu(*date)
 	if err != nil {
-		log.Println(err)
 		return err
 	}
 	return ctx.JSON(http.StatusOK, view)
