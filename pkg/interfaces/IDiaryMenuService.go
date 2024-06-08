@@ -1,7 +1,12 @@
 package interfaces
 
-import "github.com/MJU-Mobilecomputing/jjikdan-backend/internal/repository"
+import (
+	"mime/multipart"
+
+	"github.com/MJU-Mobilecomputing/jjikdan-backend/internal/repository"
+	"github.com/MJU-Mobilecomputing/jjikdan-backend/internal/utils"
+)
 
 type IDiaryMenuService interface {
-	Create(repository.CreateDiaryMenuParams) (*repository.DiaryMenu, error)
+	Create(*multipart.FileHeader, utils.CreateMenuRequest) (*repository.DiaryMenu, error)
 }

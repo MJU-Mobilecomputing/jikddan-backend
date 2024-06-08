@@ -111,14 +111,16 @@ type DiaryDayView struct {
 }
 
 type DiaryMenu struct {
-	ID         int64              `db:"id" json:"id"`
-	DiaryDayID *int64             `db:"diary_day_id" json:"diary_day_id"`
-	Date       pgtype.Date        `db:"date" json:"date"`
-	Img        *string            `db:"img" json:"img"`
-	Summary    *string            `db:"summary" json:"summary"`
-	TotalCal   *int32             `db:"total_cal" json:"total_cal"`
-	Status     NullStatus         `db:"status" json:"status"`
-	MenuTime   NullMenuTime       `db:"menu_time" json:"menu_time"`
-	CreatedAt  pgtype.Timestamptz `db:"created_at" json:"created_at"`
-	UpdatedAt  pgtype.Timestamptz `db:"updated_at" json:"updated_at"`
+	ID           int64              `db:"id" json:"id"`
+	DiaryDayID   *int64             `db:"diary_day_id" json:"diary_day_id"`
+	Date         pgtype.Date        `db:"date" json:"date"`
+	Img          *string            `db:"img" json:"img"`
+	Summary      *string            `db:"summary" json:"summary"`
+	TotalCal     *int32             `db:"total_cal" json:"total_cal"`
+	MenuTime     NullMenuTime       `db:"menu_time" json:"menu_time"`
+	CreatedAt    pgtype.Timestamptz `db:"created_at" json:"created_at"`
+	UpdatedAt    pgtype.Timestamptz `db:"updated_at" json:"updated_at"`
+	FoodMoisture *int32             `db:"food_moisture" json:"food_moisture"`
+	Salt         *int32             `db:"salt" json:"salt"`
+	Score        *int32             `db:"score" json:"score"`
 }
