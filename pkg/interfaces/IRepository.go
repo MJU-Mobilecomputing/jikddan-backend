@@ -13,4 +13,5 @@ type IRepository interface {
 	FindDiaryDayWithDate(context.Context, pgtype.Date) (repository.DiaryDay, error)
 	FindDiaryDayWithMenus(context.Context, pgtype.Date) (repository.DiaryDayView, error)
 	FindDailySummaryWithDate(context.Context, pgtype.Date) (repository.DiaryDailySummary, error)
+	FindWeeklySummary(context.Context, repository.FindWeeklySummaryParams) (repository.FindWeeklySummaryRow, error)
 }

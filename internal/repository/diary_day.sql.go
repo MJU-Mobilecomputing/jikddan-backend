@@ -30,7 +30,7 @@ func (q *Queries) CreateDiaryDay(ctx context.Context, date pgtype.Date) (DiaryDa
 }
 
 const findDailySummaryWithDate = `-- name: FindDailySummaryWithDate :one
-SELECT diary_date, total_food_moisture, total_salt, average_score FROM diary_daily_summary WHERE diary_date = $1
+SELECT diary_date, total_food_moisture, total_salt, total_cal, total_carbon, total_fat, total_protein, average_score FROM diary_daily_summary WHERE diary_date = $1
 `
 
 func (q *Queries) FindDailySummaryWithDate(ctx context.Context, diaryDate pgtype.Date) (DiaryDailySummary, error) {
@@ -40,6 +40,10 @@ func (q *Queries) FindDailySummaryWithDate(ctx context.Context, diaryDate pgtype
 		&i.DiaryDate,
 		&i.TotalFoodMoisture,
 		&i.TotalSalt,
+		&i.TotalCal,
+		&i.TotalCarbon,
+		&i.TotalFat,
+		&i.TotalProtein,
 		&i.AverageScore,
 	)
 	return i, err
