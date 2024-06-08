@@ -14,16 +14,18 @@ type DiaryMenuService struct {
 }
 
 func (d *DiaryMenuService) Create(param repository.CreateDiaryMenuParams) (*repository.DiaryMenu, error) {
-	diaryMenu, err := d.Repository.CreateDiaryMenu(context.Background(), param)
+	var diaryDay *repository.DiaryDay
+	diaryDay, err := d.DiaryDayService.FindOneByDate(param.Date)
 	if err != nil {
-		return nil, customerror.DiaryMenuCreationFail(err)
-	}
-	_, err = d.DiaryDayService.FindOneByDate(param.Date)
-	if err != nil {
-		_, err := d.DiaryDayService.Create(param.Date)
+		diaryDay, err = d.DiaryDayService.Create(param.Date)
 		if err != nil {
 			return nil, err
 		}
+	}
+	param.DiaryDayID = &diaryDay.ID
+	diaryMenu, err := d.Repository.CreateDiaryMenu(context.Background(), param)
+	if err != nil {
+		return nil, customerror.DiaryMenuCreationFail(err)
 	}
 	return &diaryMenu, nil
 }

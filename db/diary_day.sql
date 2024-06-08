@@ -5,3 +5,6 @@ RETURNING *;
 
 -- name: FindDiaryDayWithDate :one
 SELECT * FROM diary_day WHERE date = $1;
+
+-- name: FindDiaryDayWithMenus :one
+SELECT * FROM diary_day_view WHERE diary_date = $1;

@@ -104,6 +104,12 @@ type DiaryDay struct {
 	UpdatedAt pgtype.Timestamptz `db:"updated_at" json:"updated_at"`
 }
 
+type DiaryDayView struct {
+	DiaryDayID int64       `db:"diary_day_id" json:"diary_day_id"`
+	DiaryDate  pgtype.Date `db:"diary_date" json:"diary_date"`
+	DiaryMenus []DiaryMenu `db:"diary_menus" json:"diary_menus"`
+}
+
 type DiaryMenu struct {
 	ID         int64              `db:"id" json:"id"`
 	DiaryDayID *int64             `db:"diary_day_id" json:"diary_day_id"`
