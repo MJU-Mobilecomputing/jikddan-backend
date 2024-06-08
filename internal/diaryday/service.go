@@ -36,6 +36,14 @@ func (d *DiaryDayService) FindOneWithMenu(date pgtype.Date) (*repository.DiaryDa
 	return &diaryMenus, nil
 }
 
+func (d *DiaryDayService) FindSummary(date pgtype.Date) (*repository.DiaryDailySummary, error) {
+	dailySummary, err := d.Repository.FindDailySummaryWithDate(context.Background(), date)
+	if err != nil {
+		return nil, err
+	}
+	return &dailySummary, nil
+}
+
 func InitDiaryDayService() *DiaryDayService {
 	return &DiaryDayService{}
 }

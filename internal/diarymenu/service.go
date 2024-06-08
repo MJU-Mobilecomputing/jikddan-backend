@@ -35,7 +35,6 @@ func (d *DiaryMenuService) Create(file *multipart.FileHeader, body utils.CreateM
 	if err != nil {
 		return nil, err
 	}
-
 	diaryDay, err = d.DiaryDayService.FindOneByDate(body.Date)
 	if err != nil {
 		diaryDay, err = d.DiaryDayService.Create(body.Date)

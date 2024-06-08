@@ -97,6 +97,13 @@ func (ns NullStatus) Value() (driver.Value, error) {
 	return string(ns.Status), nil
 }
 
+type DiaryDailySummary struct {
+	DiaryDate         pgtype.Date `db:"diary_date" json:"diary_date"`
+	TotalFoodMoisture int64       `db:"total_food_moisture" json:"total_food_moisture"`
+	TotalSalt         int64       `db:"total_salt" json:"total_salt"`
+	AverageScore      float64     `db:"average_score" json:"average_score"`
+}
+
 type DiaryDay struct {
 	ID        int64              `db:"id" json:"id"`
 	Date      pgtype.Date        `db:"date" json:"date"`
