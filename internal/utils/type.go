@@ -11,6 +11,9 @@ type MenuNeutrient struct {
 	Calrory      int    `json:"calrory"`
 	FoodMoisture int    `json:"food_moisture"`
 	Salt         int    `json:"salt"`
+	Carbon       int    `json:"carbon"`
+	Fat          int    `json:"fat"`
+	Protein      int    `json:"protein"`
 	Summary      string `json:"summary"`
 	Score        int    `json:"score"`
 }

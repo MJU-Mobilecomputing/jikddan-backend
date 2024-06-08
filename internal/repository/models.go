@@ -130,4 +130,7 @@ type DiaryMenu struct {
 	FoodMoisture *int32             `db:"food_moisture" json:"food_moisture"`
 	Salt         *int32             `db:"salt" json:"salt"`
 	Score        *int32             `db:"score" json:"score"`
+	Carbon       *int32             `db:"carbon" json:"carbon"`
+	Fat          *int32             `db:"fat" json:"fat"`
+	Protein      *int32             `db:"protein" json:"protein"`
 }

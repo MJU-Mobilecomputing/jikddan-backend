@@ -12,9 +12,9 @@ import (
 )
 
 const createDiaryMenu = `-- name: CreateDiaryMenu :one
-INSERT INTO diary_menu (diary_day_id, img, summary, total_cal,  menu_time, date, food_moisture, salt, score)
-VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-RETURNING id, diary_day_id, date, img, summary, total_cal, menu_time, created_at, updated_at, food_moisture, salt, score
+INSERT INTO diary_menu (diary_day_id, img, summary, total_cal,  menu_time, date, food_moisture, salt, score, carbon, fat, protein)
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+RETURNING id, diary_day_id, date, img, summary, total_cal, menu_time, created_at, updated_at, food_moisture, salt, score, carbon, fat, protein
 `
 
 type CreateDiaryMenuParams struct {
@@ -27,6 +27,9 @@ type CreateDiaryMenuParams struct {
 	FoodMoisture *int32       `db:"food_moisture" json:"food_moisture"`
 	Salt         *int32       `db:"salt" json:"salt"`
 	Score        *int32       `db:"score" json:"score"`
+	Carbon       *int32       `db:"carbon" json:"carbon"`
+	Fat          *int32       `db:"fat" json:"fat"`
+	Protein      *int32       `db:"protein" json:"protein"`
 }
 
 func (q *Queries) CreateDiaryMenu(ctx context.Context, arg CreateDiaryMenuParams) (DiaryMenu, error) {
@@ -40,6 +43,9 @@ func (q *Queries) CreateDiaryMenu(ctx context.Context, arg CreateDiaryMenuParams
 		arg.FoodMoisture,
 		arg.Salt,
 		arg.Score,
+		arg.Carbon,
+		arg.Fat,
+		arg.Protein,
 	)
 	var i DiaryMenu
 	err := row.Scan(
@@ -55,6 +61,9 @@ func (q *Queries) CreateDiaryMenu(ctx context.Context, arg CreateDiaryMenuParams
 		&i.FoodMoisture,
 		&i.Salt,
 		&i.Score,
+		&i.Carbon,
+		&i.Fat,
+		&i.Protein,
 	)
 	return i, err
 }
