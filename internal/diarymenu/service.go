@@ -47,11 +47,17 @@ func (d *DiaryMenuService) Create(file *multipart.FileHeader, body utils.CreateM
 	salt := int32(resp.Salt)
 	foodMoisture := int32(resp.FoodMoisture)
 	score := int32(resp.Score)
+	fat := int32(resp.Fat)
+	carbon := int32(resp.Carbon)
+	protein := int32(resp.Protein)
 	param := repository.CreateDiaryMenuParams{
 		Summary:      &resp.Summary,
 		TotalCal:     &calrory,
 		Salt:         &salt,
 		FoodMoisture: &foodMoisture,
+		Carbon:       &carbon,
+		Fat:          &fat,
+		Protein:      &protein,
 		Img:          fileUrl,
 		Date:         body.Date,
 		MenuTime:     body.MenuTime,
