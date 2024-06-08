@@ -34,7 +34,7 @@ func (d *DiaryDayService) FindOneWithMenu(date pgtype.Date) (*repository.DiaryDa
 	if err != nil {
 		return nil, customerror.DiaryDayNotFound(err)
 	}
-	return &diaryMenus, customerror.DiaryDayNotFound(err)
+	return &diaryMenus, nil
 }
 
 func (d *DiaryDayService) FindSummary(date pgtype.Date) (*repository.DiaryDailySummary, error) {
